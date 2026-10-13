@@ -1,3 +1,5 @@
+const { brainDeclaration } = require("./brain");
+
 // Customer and demand model: a plain config object plus small pure helpers.
 // Every helper takes the seeded random function `rng` as its first argument.
 
@@ -231,11 +233,9 @@ const declaration = {
     `Any stock that reaches its expiry day is removed from sale at the start of that day and recorded as a write-off at cost. ` +
     `Non-perishable products (drinks, snacks, pantry, household and personal care items) never expire.`,
 
-  storeBrain:
-    `[Placeholder: to be written once the Store Brain rules are finalised.]`,
+  storeBrain: brainDeclaration.storeBrain,
 
-  replenishment:
-    `[Placeholder: to be written once the replenishment rules are finalised.]`,
+  replenishment: brainDeclaration.replenishment,
 
   otherAssumptions:
     `All figures are simulated: the store does not exist yet, so customer numbers, product popularity, prices and costs are modelling assumptions and not real data. ` +
