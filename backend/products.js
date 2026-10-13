@@ -44,4 +44,31 @@ const products = [
 
   // --- Fresh & Bakery ---
   { product_id: "P033", name: "Sliced White Bread 650g", category: "Fresh & Bakery", unit_cost: 1.60, unit_price: 3.20, initial_qty: 180, is_perishable: 1, shelf_life_days: 4, popularity: 7 },
-  { product_id: "P034", name: "Butter Croissant", category: "Fresh & Bakery", unit_cost: 1.30, unit_price: 3.50,
+  { product_id: "P034", name: "Butter Croissant", category: "Fresh & Bakery", unit_cost: 1.30, unit_price: 3.50, initial_qty: 75, is_perishable: 1, shelf_life_days: 2, popularity: 5 },
+  { product_id: "P035", name: "Bananas 1kg", category: "Fresh & Bakery", unit_cost: 2.20, unit_price: 3.90, initial_qty: 110, is_perishable: 1, shelf_life_days: 5, popularity: 6 },
+  { product_id: "P036", name: "Royal Gala Apples 1kg", category: "Fresh & Bakery", unit_cost: 3.00, unit_price: 5.50, initial_qty: 90, is_perishable: 1, shelf_life_days: 7, popularity: 4 },
+  { product_id: "P037", name: "Avocado Hass each", category: "Fresh & Bakery", unit_cost: 1.40, unit_price: 2.80, initial_qty: 110, is_perishable: 1, shelf_life_days: 4, popularity: 4 },
+
+  // --- Ready-to-eat ---
+  { product_id: "P038", name: "Chicken Salad Sandwich", category: "Ready-to-eat", unit_cost: 3.20, unit_price: 6.80, initial_qty: 110, is_perishable: 1, shelf_life_days: 2, popularity: 9 },
+  { product_id: "P039", name: "Ham & Cheese Toastie", category: "Ready-to-eat", unit_cost: 2.80, unit_price: 6.00, initial_qty: 75, is_perishable: 1, shelf_life_days: 2, popularity: 7 },
+  { product_id: "P040", name: "Sushi Pack 8pc", category: "Ready-to-eat", unit_cost: 4.00, unit_price: 8.50, initial_qty: 75, is_perishable: 1, shelf_life_days: 2, popularity: 7 },
+  { product_id: "P041", name: "Chicken Caesar Salad Bowl", category: "Ready-to-eat", unit_cost: 4.50, unit_price: 9.00, initial_qty: 60, is_perishable: 1, shelf_life_days: 3, popularity: 6 },
+  { product_id: "P042", name: "Beef Lasagne Meal 350g", category: "Ready-to-eat", unit_cost: 4.20, unit_price: 8.50, initial_qty: 60, is_perishable: 1, shelf_life_days: 5, popularity: 4 },
+  { product_id: "P043", name: "Sausage Roll", category: "Ready-to-eat", unit_cost: 1.50, unit_price: 4.00, initial_qty: 75, is_perishable: 1, shelf_life_days: 3, popularity: 6 },
+  { product_id: "P044", name: "Fresh Fruit Cup 200g", category: "Ready-to-eat", unit_cost: 2.00, unit_price: 4.50, initial_qty: 75, is_perishable: 1, shelf_life_days: 4, popularity: 5 },
+
+  // --- Household ---
+  { product_id: "P045", name: "Toilet Paper 12pk", category: "Household", unit_cost: 6.50, unit_price: 10.00, initial_qty: 140, is_perishable: 0, shelf_life_days: null, popularity: 3 },
+  { product_id: "P046", name: "Paper Towel 2pk", category: "Household", unit_cost: 2.80, unit_price: 5.00, initial_qty: 120, is_perishable: 0, shelf_life_days: null, popularity: 2 },
+  { product_id: "P047", name: "AA Batteries 4pk", category: "Household", unit_cost: 4.50, unit_price: 8.50, initial_qty: 140, is_perishable: 0, shelf_life_days: null, popularity: 3 },
+
+  // --- Personal Care & Convenience ---
+  { product_id: "P048", name: "Toothpaste 110g", category: "Personal Care & Convenience", unit_cost: 2.20, unit_price: 4.50, initial_qty: 180, is_perishable: 0, shelf_life_days: null, popularity: 3 },
+  { product_id: "P049", name: "Roll-on Deodorant 50ml", category: "Personal Care & Convenience", unit_cost: 2.80, unit_price: 5.50, initial_qty: 140, is_perishable: 0, shelf_life_days: null, popularity: 3 },
+  { product_id: "P050", name: "Pocket Tissues 6pk", category: "Personal Care & Convenience", unit_cost: 0.70, unit_price: 1.80, initial_qty: 420, is_perishable: 0, shelf_life_days: null, popularity: 5 },
+  { product_id: "P051", name: "Compact Umbrella", category: "Personal Care & Convenience", unit_cost: 7.00, unit_price: 15.00, initial_qty: 50, is_perishable: 0, shelf_life_days: null, popularity: 2 },
+  { product_id: "P052", name: "Sunscreen SPF50+ 110ml", category: "Personal Care & Convenience", unit_cost: 5.50, unit_price: 12.00, initial_qty: 45, is_perishable: 0, shelf_life_days: null, popularity: 1 },
+];
+
+module.exports = products;
