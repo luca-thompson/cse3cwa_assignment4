@@ -20,6 +20,7 @@ export default function App() {
   const [runs, setRuns] = useState([]);
   const [runId, setRunId] = useState(null);
   const [page, setPage] = useState("declaration");
+  const [day, setDay] = useState(1);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState(null);
@@ -53,6 +54,10 @@ export default function App() {
     setStarting(false);
   }
 
+  function goToDay(d) {
+    setDay(d);
+    setPage("daily");
+  }
   const run = runs.find((r) => r.run_id === runId);
   const Page = PAGES.find((p) => p.id === page).Component;
 
@@ -98,7 +103,7 @@ export default function App() {
         {loading && <p className="loading">Loading...</p>}
         {error && <p className="error">{error}</p>}
         {!loading && !error && !runId && <p>No runs found. Run <code>npm run seed</code> to create the Submitted Run.</p>}
-        {runId && <Page key={runId} runId={runId} />}
+        {runId && <Page key={runId} runId={runId} day={day} setDay={setDay} goToDay={goToDay} />}
       </main>
     </div>
   );
