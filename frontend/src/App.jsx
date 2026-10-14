@@ -103,7 +103,7 @@ export default function App() {
         {loading && <p className="loading">Loading...</p>}
         {error && <p className="error">{error}</p>}
         {!loading && !error && !runId && <p>No runs found. Run <code>npm run seed</code> to create the Submitted Run.</p>}
-        {runId && <Page key={runId} runId={runId} day={day} setDay={setDay} goToDay={goToDay} />}
+        {runId && <Page key={runId} runId={runId} day={day} setDay={setDay} goToDay={goToDay} goToPage={setPage} />}
       </main>
     </div>
   );
