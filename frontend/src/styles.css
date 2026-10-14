@@ -1,15 +1,33 @@
+:root {
+  color-scheme: dark;            /* dark scrollbars and form controls */
+  --bg: #0a1428;                 /* page background */
+  --surface: #101f3d;            /* main content area */
+  --surface-2: #17294d;          /* inputs, panels, table label cells */
+  --header: #1b3366;             /* table headers */
+  --border: #2a3f6b;
+  --text: #e4e9f4;
+  --muted: #9fb0cf;
+  --heading: #ffffff;
+  --link: #7db2ff;
+  --accent: #4d8bf5;             /* tab underline, KPI edge */
+  --pass: #5fd38a;
+  --fail: #ff7b8a;
+}
+
 body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   margin: 0;
-  background: #f6f7f9;
-  color: #222;
+  background: var(--bg);
+  color: var(--text);
   line-height: 1.5;
 }
 
 .app {
-  max-width: 1100px;
+  width: 100%;
+  max-width: 1800px;
   margin: 0 auto;
-  padding: 16px 20px 40px;
+  padding: 16px 32px 40px;
+  box-sizing: border-box;
 }
 
 header {
@@ -18,24 +36,33 @@ header {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  background: var(--header);
+  color: var(--heading);
+  padding: 14px 20px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
 }
 
 h1 { font-size: 1.4rem; margin: 0; }
-h2 { margin-top: 24px; }
-h3 { margin-top: 20px; }
+h2 { margin-top: 24px; color: var(--heading); }
+h3 { margin-top: 20px; color: #c3d3f2; }
+
+main p, main li { max-width: 120ch; }
 
 .run-bar { display: flex; align-items: center; gap: 12px; }
 
 select, button {
   font: inherit;
   padding: 6px 10px;
-  border: 1px solid #b8bec7;
+  border: 1px solid var(--border);
   border-radius: 4px;
-  background: #fff;
+  background: var(--surface-2);
+  color: var(--text);
 }
 
 button { cursor: pointer; }
-button:disabled { cursor: default; opacity: 0.6; }
+button:hover:not(:disabled) { background: #22386a; }
+button:disabled { cursor: default; opacity: 0.5; }
 
 .banner {
   margin: 12px 0;
@@ -43,14 +70,14 @@ button:disabled { cursor: default; opacity: 0.6; }
   border-radius: 4px;
   font-size: 0.95rem;
 }
-.banner.submitted { background: #e3f4e6; border: 1px solid #9fd3a8; }
-.banner.other { background: #fff4d6; border: 1px solid #e6cd7a; }
+.banner.submitted { background: #12382b; border: 1px solid #2f7a58; }
+.banner.other { background: #3f3514; border: 1px solid #8a7524; }
 
 nav {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  border-bottom: 2px solid #d5d9df;
+  border-bottom: 2px solid var(--border);
 }
 
 .tab {
@@ -59,58 +86,66 @@ nav {
   border-radius: 0;
   background: none;
   margin-bottom: -2px;
+  color: var(--muted);
 }
-.tab:hover { background: #eceff3; }
-.tab.active { border-bottom-color: #2563eb; font-weight: 600; }
+.tab:hover:not(:disabled) { background: var(--surface-2); color: var(--text); }
+.tab.active { border-bottom-color: var(--accent); color: var(--heading); font-weight: 600; }
 
-main { background: #fff; border: 1px solid #e1e4e8; border-top: none; padding: 4px 20px 20px; }
+main { background: var(--surface); border: 1px solid var(--border); border-top: none; padding: 4px 28px 28px; }
 
-table { border-collapse: collapse; width: 100%; margin: 8px 0 16px; font-size: 0.92rem; }
-th, td { border: 1px solid #e1e4e8; padding: 5px 8px; text-align: left; }
-th { background: #f0f2f5; }
+table { border-collapse: collapse; width: 100%; margin: 8px 0 16px; font-size: 0.95rem; }
+th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+thead th { background: var(--header); color: var(--heading); }
+tbody th { background: var(--surface-2); color: var(--text); }
 td.num, th.num { text-align: right; }
 
-code { background: #eef0f3; padding: 1px 5px; border-radius: 3px; }
+code { background: var(--surface-2); padding: 1px 5px; border-radius: 3px; }
 
-.loading { color: #666; }
-.error { color: #b00020; background: #fdecee; border: 1px solid #f3b6bd; padding: 8px 12px; border-radius: 4px; }
+.loading { color: var(--muted); }
+.error { color: #ffb3bc; background: #4a1c26; border: 1px solid #8c3342; padding: 8px 12px; border-radius: 4px; }
 
-/* Step 13: Business Performance */
-.kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin: 16px 0; }
-.kpi { border: 1px solid #d5d9df; border-radius: 6px; padding: 10px 12px; background: #fafbfc; }
-.kpi-label { font-size: 0.8rem; color: #555; }
-.kpi-value { font-size: 1.15rem; font-weight: 600; }
+/* Business Performance */
+.kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
+.kpi { border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 6px; padding: 12px 14px; background: var(--surface-2); }
+.kpi-label { font-size: 0.8rem; color: var(--muted); }
+.kpi-value { font-size: 1.2rem; font-weight: 600; color: var(--heading); }
 
-.small { font-size: 0.85rem; color: #555; }
+.small { font-size: 0.85rem; color: var(--muted); }
 
-button.link { border: none; background: none; padding: 0; color: #1d4ed8; text-decoration: underline; cursor: pointer; }
+button.link { border: none; background: none; padding: 0; color: var(--link); text-decoration: underline; cursor: pointer; }
+button.link:hover:not(:disabled) { background: none; color: #b5d3ff; }
 
-.modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.35); display: flex; justify-content: center; align-items: flex-start; padding-top: 5vh; }
-.modal { background: #fff; border-radius: 6px; padding: 16px 20px; width: min(760px, 92vw); max-height: 85vh; display: flex; flex-direction: column; }
+.modal-backdrop { position: fixed; inset: 0; background: rgba(2, 8, 20, 0.7); display: flex; justify-content: center; align-items: flex-start; padding-top: 5vh; }
+.modal { background: var(--surface); border: 1px solid var(--border); border-top: 4px solid var(--accent); border-radius: 6px; padding: 16px 20px; width: min(1000px, 94vw); max-height: 88vh; display: flex; flex-direction: column; }
 .modal-body { overflow: auto; }
 .modal-close { align-self: flex-end; }
 
-/* Step 15: Daily Report */
+/* Daily Report */
 .day-bar { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
 
-.scroll { max-height: 360px; overflow: auto; border: 1px solid #e1e4e8; margin: 8px 0 16px; }
+.scroll { max-height: 520px; overflow: auto; border: 1px solid var(--border); margin: 8px 0 16px; }
 .scroll table { margin: 0; }
 .scroll th { position: sticky; top: 0; }
 
-tr.soldout td { background: #fdecee; }
-tr.low td { background: #fff4d6; }
-.swatch { display: inline-block; width: 12px; height: 12px; border: 1px solid #b8bec7; vertical-align: middle; }
-.swatch.soldout { background: #fdecee; }
-.swatch.low { background: #fff4d6; }
+tr.soldout td { background: #4a1f2a; }
+tr.low td { background: #4a3d17; }
+.swatch { display: inline-block; width: 12px; height: 12px; border: 1px solid var(--muted); vertical-align: middle; }
+.swatch.soldout { background: #4a1f2a; }
+.swatch.low { background: #4a3d17; }
 
-.panel { border: 1px solid #9fb6e8; background: #f3f7ff; border-radius: 6px; padding: 10px 14px; margin: 8px 0 16px; }
+.panel { border: 1px solid var(--border); background: var(--surface-2); border-radius: 6px; padding: 10px 14px; margin: 8px 0 16px; }
 
-/* Step 16: Commercial Assurance */
-.pass { color: #1a7f37; }
-.fail { color: #b00020; }
-.banner.fail-banner { background: #fdecee; border: 1px solid #f3b6bd; }
-tr.fail-row td { background: #fdecee; }
+/* Commercial Assurance */
+.pass { color: var(--pass); }
+.fail { color: var(--fail); }
+.banner.fail-banner { background: #4a1c26; border: 1px solid #8c3342; }
+tr.fail-row td { background: #4a1f2a; }
 details { margin: 8px 0 16px; }
-summary { cursor: pointer; }
+summary { cursor: pointer; color: #c3d3f2; }
 
-.source { font-size: 0.85rem; color: #555; background: #f6f7f9; border-left: 3px solid #b8bec7; padding: 6px 10px; margin: 6px 0 16px; }
+.source { font-size: 0.85rem; color: var(--muted); background: var(--surface-2); border-left: 3px solid var(--accent); padding: 6px 10px; margin: 6px 0 16px; max-width: 120ch; }
+
+/* Recharts: readable labels and gridlines on the dark background */
+.recharts-text, .recharts-legend-item-text { fill: #b8c6e0; color: #b8c6e0 !important; }
+.recharts-cartesian-grid line { stroke: #2a3f6b; }
+.recharts-cartesian-axis-line, .recharts-cartesian-axis-tick-line { stroke: #4a5f8c; }

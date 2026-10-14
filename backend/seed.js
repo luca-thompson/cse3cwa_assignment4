@@ -6,11 +6,11 @@ console.time("simulation");
 const runId = runSimulation();
 console.timeEnd("simulation");
 
-// Only one run is the Submitted Run (is_submitted is a pointer, not history).
+// makes sure that only one run is 'submitted'
 db.prepare("UPDATE runs SET is_submitted = 0 WHERE is_submitted = 1").run();
 db.prepare("UPDATE runs SET is_submitted = 1 WHERE run_id = ?").run(runId);
 
-// Totals are read back from the stored history, not from memory.
+// gets totals back from db
 const t = db.prepare(`
   SELECT SUM(customers) AS customers, SUM(transactions) AS transactions, SUM(units_sold) AS units,
          SUM(revenue) AS revenue, SUM(cogs) AS cogs, SUM(expired_value) AS writeoffs

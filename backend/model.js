@@ -1,19 +1,16 @@
 const { brainDeclaration } = require("./brain");
 
-// Customer and demand model: a plain config object plus small pure helpers.
-// Every helper takes the seeded random function `rng` as its first argument.
+// This is the customer demand model used to simuate shoppers
 
 const config = {
   seed: 20260601, // stored in runs.config_json; same seed + same config = same run
 
-  // Product choice weight = category preference x popularity^popularityPower.
-  // A power above 1 makes best sellers sell much more than specialty items.
+  //this value decides how uch better 'top sellers' sell than regular items
   popularityPower: 2,
 
-  // Day 1 is a Monday. 0 = Monday ... 6 = Sunday.
+  // 1=monday, 2=tuesday etc..
   firstDayOfWeek: 0,
 
-  // --- Customer arrivals per day ---
   arrivals: {
     baseDailyMean: 260,   // average weekday customers
     weekendMultiplier: 0.8, // CBD is quieter on weekends
@@ -24,7 +21,7 @@ const config = {
     eventName: "Town Hall street festival",
   },
 
-  // --- Arrival weight for each hour of the day (0-23). Only the ratios matter. ---
+  //weights for each hour
   hourlyProfile: {
     weekday: [0.5, 0.3, 0.2, 0.2, 0.3, 0.8, 2.0, 4.5, 7.0, 5.0, 4.0, 6.0,
               11.0, 10.0, 6.0, 5.0, 5.5, 9.0, 8.5, 5.5, 4.0, 3.0, 1.8, 1.0],
