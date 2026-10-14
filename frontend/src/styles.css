@@ -1,26 +1,81 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   margin: 0;
-  background: #f5f5f5;
+  background: #f6f7f9;
   color: #222;
+  line-height: 1.5;
 }
 
-.page {
-  max-width: 900px;
+.app {
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 16px 20px 40px;
 }
 
-pre {
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+h1 { font-size: 1.4rem; margin: 0; }
+h2 { margin-top: 24px; }
+h3 { margin-top: 20px; }
+
+.run-bar { display: flex; align-items: center; gap: 12px; }
+
+select, button {
+  font: inherit;
+  padding: 6px 10px;
+  border: 1px solid #b8bec7;
+  border-radius: 4px;
   background: #fff;
-  padding: 12px;
-  border: 1px solid #ccc;
 }
 
-.error {
-  color: #b00020;
+button { cursor: pointer; }
+button:disabled { cursor: default; opacity: 0.6; }
+
+.banner {
+  margin: 12px 0;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+.banner.submitted { background: #e3f4e6; border: 1px solid #9fd3a8; }
+.banner.other { background: #fff4d6; border: 1px solid #e6cd7a; }
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  border-bottom: 2px solid #d5d9df;
 }
 
+.tab {
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  background: none;
+  margin-bottom: -2px;
+}
+.tab:hover { background: #eceff3; }
+.tab.active { border-bottom-color: #2563eb; font-weight: 600; }
+
+main { background: #fff; border: 1px solid #e1e4e8; border-top: none; padding: 4px 20px 20px; }
+
+table { border-collapse: collapse; width: 100%; margin: 8px 0 16px; font-size: 0.92rem; }
+th, td { border: 1px solid #e1e4e8; padding: 5px 8px; text-align: left; }
+th { background: #f0f2f5; }
+td.num, th.num { text-align: right; }
+
+code { background: #eef0f3; padding: 1px 5px; border-radius: 3px; }
+
+.loading { color: #666; }
+.error { color: #b00020; background: #fdecee; border: 1px solid #f3b6bd; padding: 8px 12px; border-radius: 4px; }
+
+/* Step 13: Business Performance */
 .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin: 16px 0; }
 .kpi { border: 1px solid #d5d9df; border-radius: 6px; padding: 10px 12px; background: #fafbfc; }
 .kpi-label { font-size: 0.8rem; color: #555; }
@@ -35,6 +90,7 @@ button.link { border: none; background: none; padding: 0; color: #1d4ed8; text-d
 .modal-body { overflow: auto; }
 .modal-close { align-self: flex-end; }
 
+/* Step 15: Daily Report */
 .day-bar { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
 
 .scroll { max-height: 360px; overflow: auto; border: 1px solid #e1e4e8; margin: 8px 0 16px; }
@@ -49,6 +105,7 @@ tr.low td { background: #fff4d6; }
 
 .panel { border: 1px solid #9fb6e8; background: #f3f7ff; border-radius: 6px; padding: 10px 14px; margin: 8px 0 16px; }
 
+/* Step 16: Commercial Assurance */
 .pass { color: #1a7f37; }
 .fail { color: #b00020; }
 .banner.fail-banner { background: #fdecee; border: 1px solid #f3b6bd; }
