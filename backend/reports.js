@@ -99,11 +99,11 @@ function getMaterialCases(runId) {
   const count = (sql, ...p) => q1(sql, ...p).n;
 
   // Largest write-offs (top 3).
-  for (const p of qAll(`SELECT p.product_id, p.name, -SUM(e.qty_change) AS units, -SUM(e.qty_change * p.unit_cost) AS value, COUNT(*) AS lots
+  for (const p of qAll(`SELECT p.product_id, p.name, -SUM(e.qty_change) AS units, -SUM(e.qty_change * p.unit_cost) AS value, COUNT(*) AS lots, MIN(e.day) AS firstDay
       FROM inventory_events e JOIN run_products p ON p.run_id = e.run_id AND p.product_id = e.product_id
       WHERE e.run_id = ? AND e.type = 'expired' GROUP BY p.product_id ORDER BY value DESC LIMIT 3`, runId)) {
     const warnings = count("SELECT COUNT(*) AS n FROM brain_events WHERE run_id = ? AND product_id = ? AND event_type = 'expiry_warning'", runId, p.product_id);
-    cases.push({ type: "write-off", product_id: p.product_id, name: p.name,
+    cases.push({ type: "write-off", product_id: p.product_id, name: p.name, day: p.firstDay,
       condition: `${warnings} expiry warnings`,
       action: "Units sold earliest-expiry first; no markdown",
       outcome: `${p.units} units from ${p.lots} batches still expired, A$${p.value.toFixed(2)} written off` });
@@ -117,7 +117,7 @@ function getMaterialCases(runId) {
     const again = count(`SELECT COUNT(*) AS n FROM brain_events a WHERE a.run_id = ? AND a.product_id = ? AND a.event_type = 'sold_out'
       AND EXISTS (SELECT 1 FROM brain_events b WHERE b.run_id = a.run_id AND b.product_id = a.product_id AND b.event_type = 'sold_out' AND b.day = a.day + 1)`, runId, p.product_id);
     const lostDays = count("SELECT COUNT(*) AS n FROM brain_events WHERE run_id = ? AND product_id = ? AND event_type = 'stockout_demand'", runId, p.product_id);
-    cases.push({ type: "stockout", product_id: p.product_id, name: p.name,
+    cases.push({ type: "stockout", product_id: p.product_id, name: p.name, day: p.firstDay,
       condition: `Sold out at close on ${p.days} days (first on day ${p.firstDay})`,
       action: first.action_taken,
       outcome: `Sold out again the next day on ${again} of those occasions; customers were turned away on ${lostDays} days` });

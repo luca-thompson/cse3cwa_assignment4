@@ -34,3 +34,24 @@ button.link { border: none; background: none; padding: 0; color: #1d4ed8; text-d
 .modal { background: #fff; border-radius: 6px; padding: 16px 20px; width: min(760px, 92vw); max-height: 85vh; display: flex; flex-direction: column; }
 .modal-body { overflow: auto; }
 .modal-close { align-self: flex-end; }
+
+.day-bar { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
+
+.scroll { max-height: 360px; overflow: auto; border: 1px solid #e1e4e8; margin: 8px 0 16px; }
+.scroll table { margin: 0; }
+.scroll th { position: sticky; top: 0; }
+
+tr.soldout td { background: #fdecee; }
+tr.low td { background: #fff4d6; }
+.swatch { display: inline-block; width: 12px; height: 12px; border: 1px solid #b8bec7; vertical-align: middle; }
+.swatch.soldout { background: #fdecee; }
+.swatch.low { background: #fff4d6; }
+
+.panel { border: 1px solid #9fb6e8; background: #f3f7ff; border-radius: 6px; padding: 10px 14px; margin: 8px 0 16px; }
+
+.pass { color: #1a7f37; }
+.fail { color: #b00020; }
+.banner.fail-banner { background: #fdecee; border: 1px solid #f3b6bd; }
+tr.fail-row td { background: #fdecee; }
+details { margin: 8px 0 16px; }
+summary { cursor: pointer; }
