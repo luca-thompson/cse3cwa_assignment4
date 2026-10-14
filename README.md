@@ -20,6 +20,7 @@ From the project root:
 ```bash
 cd backend
 npm install
+npm run seed
 npm run dev
 ```
 In a new terminal, from project root:
