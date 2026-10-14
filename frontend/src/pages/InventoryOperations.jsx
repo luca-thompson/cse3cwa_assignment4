@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContaine
 import { fetchJson } from "../api.js";
 import { money, int } from "../format.js";
 import ProductHistory from "../ProductHistory.jsx";
+import Source from "../Source.jsx";
 
 // Every event type the Store Brain can record, with what it does about it.
 const EVENT_ROWS = [
@@ -53,14 +54,21 @@ export default function InventoryOperations({ runId, goToDay }) {
           <tr><th>Closing inventory (units, at cost)</th><td className="num">{int(sum(closingByCategory, "units"))} units, {money(sum(closingByCategory, "value"), 2)}</td></tr>
         </tbody>
       </table>
-
+      <Source>
+        Counts of sold-out, low-stock, expiry and unmet-demand events come from brain_events. Expired units come from inventory_events, valued
+        at unit cost from run_products. Orders, units and spending come from the orders table. Every event and order is listed on the Daily
+        Report of the day it happened; use the day links in the tables below.
+      </Source>
       <h3>Stockouts: products most often sold out at close</h3>
       {stockouts.topProducts.length === 0 ? <None /> : (
         <table>
-          <thead><tr><th>Product</th><th className="num">Days sold out</th></tr></thead>
+          <thead><tr><th>Product</th><th className="num">Days sold out</th><th className="num">First sold out (day)</th></tr></thead>
           <tbody>
             {stockouts.topProducts.map((p) => (
-              <tr key={p.product_id}><td>{productLink(p.product_id, p.name)}</td><td className="num">{p.daysSoldOut}</td></tr>
+              <tr key={p.product_id}>
+                           <td>{productLink(p.product_id, p.name)}</td><td className="num">{p.daysSoldOut}</td>
+                           <td className="num"><button className="link" onClick={() => goToDay(p.firstDay)}>{p.firstDay}</button></td>
+                         </tr>
             ))}
           </tbody>
         </table>
@@ -70,10 +78,13 @@ export default function InventoryOperations({ runId, goToDay }) {
       {expiredByCategory.length === 0 ? <None /> : (
         <>
           <table>
-            <thead><tr><th>Category</th><th className="num">Units expired</th><th className="num">Write-off value</th></tr></thead>
+            <thead><tr><th>Category</th><th className="num">Units expired</th><th className="num">Write-off value</th><th className="num">First write-off (day)</th></tr></thead>
             <tbody>
               {expiredByCategory.map((c) => (
-                <tr key={c.name}><td>{c.name}</td><td className="num">{int(c.units)}</td><td className="num">{money(c.value, 2)}</td></tr>
+                <tr key={c.name}>
+                  <td>{c.name}</td><td className="num">{int(c.units)}</td><td className="num">{money(c.value, 2)}</td>
+                  <td className="num"><button className="link" onClick={() => goToDay(c.firstDay)}>{c.firstDay}</button></td>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -90,10 +101,13 @@ export default function InventoryOperations({ runId, goToDay }) {
           </div>
           <h4>Top products by write-off value</h4>
           <table>
-            <thead><tr><th>Product</th><th className="num">Units expired</th><th className="num">Write-off value</th></tr></thead>
+            <thead><tr><th>Product</th><th className="num">Units expired</th><th className="num">Write-off value</th><th className="num">First write-off (day)</th></tr></thead>
             <tbody>
               {expiredByProduct.slice(0, 10).map((p) => (
-                <tr key={p.name}><td>{p.name}</td><td className="num">{int(p.units)}</td><td className="num">{money(p.value, 2)}</td></tr>
+                <tr key={p.product_id}>
+                  <td>{productLink(p.product_id, p.name)}</td><td className="num">{int(p.units)}</td><td className="num">{money(p.value, 2)}</td>
+                  <td className="num"><button className="link" onClick={() => goToDay(p.firstDay)}>{p.firstDay}</button></td>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -136,7 +150,10 @@ export default function InventoryOperations({ runId, goToDay }) {
           ))}
         </tbody>
       </table>
-
+      <Source>
+        Closing stock is the sum of all inventory_events per product (opening + received - sold - expired), valued at unit cost. The{" "}
+        <button className="link" onClick={() => goToDay(60)}>Day 60 Daily Report</button> shows every product's closing stock.
+      </Source>
       <h3>2. Store Brain operations</h3>
       <table>
         <thead><tr><th>Event type</th><th className="num">Count</th><th>Store Brain response</th></tr></thead>
@@ -149,7 +166,10 @@ export default function InventoryOperations({ runId, goToDay }) {
       <p className="small">
         A count of zero means that event never occurred in this run. Orders reduced because of insufficient cash: {data.constrainedOrders}.
       </p>
-
+      <Source>
+        Each count is the number of rows of that type in brain_events. Every row appears on the Daily Report for its day, with the product,
+        the detail and the action taken.
+      </Source>
       <h3>3. Material cases: condition, action, outcome</h3>
       {materialCases.length === 0 ? <None /> : (
         <table>

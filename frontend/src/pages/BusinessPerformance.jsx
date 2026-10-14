@@ -3,8 +3,9 @@ import { ComposedChart, Bar, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid,
 import { fetchJson } from "../api.js";
 import { money, int, pct } from "../format.js";
 import ProductHistory from "../ProductHistory.jsx";
+import Source from "../Source.jsx";
 
-export default function BusinessPerformance({ runId, goToDay }) {
+export default function BusinessPerformance({ runId, goToDay, goToPage }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [productId, setProductId] = useState(null);
@@ -63,7 +64,12 @@ export default function BusinessPerformance({ runId, goToDay }) {
           </div>
         ))}
       </div>
-
+      <Source>
+        Customers, transactions, units, revenue, COGS and write-offs are the sum of the 60 rows in daily_summary. Closing cash and closing
+        inventory are the Day 60 row (<button className="link" onClick={() => goToDay(60)}>open Day 60</button>). Gross profit is revenue minus COGS.
+        Each day is cross-checked against the transactions, transaction_lines, inventory_events, orders and cash_ledger tables on the{" "}
+        <button className="link" onClick={() => goToPage("assurance")}>Commercial Assurance</button> page.
+      </Source>
       <h3>Shoppers and baskets</h3>
       <table>
         <tbody>
@@ -88,7 +94,10 @@ export default function BusinessPerformance({ runId, goToDay }) {
         </tbody>
       </table>
       <p className="small">The weekend average includes the one-off Town Hall festival Saturday, which lifts it.</p>
-
+      <Source>
+        Averages divide the 60-day daily_summary totals by days, transactions or customers. Weekends are Saturdays and Sundays. Click any bar in
+        the chart below to see that day's Daily Report.
+      </Source>
       <h3>Customers and revenue by day</h3>
       <p className="small">Click a bar to open that day's Daily Report.</p>
       <div style={{ width: "100%", height: 320 }}>
@@ -123,13 +132,19 @@ export default function BusinessPerformance({ runId, goToDay }) {
           ))}
         </tbody>
       </table>
-
+      <Source>
+        Summed from transaction_lines joined to the product list (run_products). Gross profit is line revenue minus units times the unit cost
+        recorded on each line.
+      </Source>aw
       <h3>Top 10 products by revenue</h3>
       <ProductTable rows={topByRevenue} onProduct={setProductId} />
 
       <h3>Bottom 10 products by units sold (weak sellers)</h3>
       <ProductTable rows={weakest} onProduct={setProductId} />
-
+      <Source>
+        Per-product units and revenue are summed from transaction_lines. Click a product to see its day-by-day stock, sales, expiry and orders
+        (inventory_events and orders), with links to each day.
+      </Source>
       {productId && <ProductHistory runId={runId} productId={productId} onClose={() => setProductId(null)} onDay={goToDay} />}
     </section>
   );

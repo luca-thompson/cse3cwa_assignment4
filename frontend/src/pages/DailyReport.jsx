@@ -128,7 +128,7 @@ export default function DailyReport({ runId, day, setDay }) {
               {brainEvents.map((e) => (
                 <tr key={e.event_id}>
                   <td>{e.event_type}</td>
-                  <td>{names[e.product_id] || e.product_id}</td>
+                  <td><button className="link" onClick={() => setProductId(e.product_id)}>{names[e.product_id] || e.product_id}</button></td>
                   <td>{e.detail}</td>
                   <td>{e.action_taken}</td>
                 </tr>
@@ -151,7 +151,7 @@ export default function DailyReport({ runId, day, setDay }) {
             <tbody>
               {orders.map((o) => (
                 <tr key={o.order_id}>
-                  <td>{o.name}</td>
+                  <td><button className="link" onClick={() => setProductId(o.product_id)}>{o.name}</button></td>
                   <td className="num">{o.requested_qty}</td>
                   <td className="num">{o.qty}</td>
                   <td className="num">{money(o.cost, 2)}</td>

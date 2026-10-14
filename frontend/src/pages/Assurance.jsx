@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { fetchJson } from "../api.js";
 import { money, int } from "../format.js";
+import ProductHistory from "../ProductHistory.jsx";
+import Source from "../Source.jsx";
 
 const Status = ({ value }) => <strong className={value === "PASS" ? "pass" : "fail"}>{value}</strong>;
 const countType = (exceptions, ...types) => exceptions.filter((e) => types.includes(e.type)).length;
@@ -8,6 +10,7 @@ const countType = (exceptions, ...types) => exceptions.filter((e) => types.inclu
 export default function Assurance({ runId, goToDay }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+    const [productId, setProductId] = useState(null);
 
   useEffect(() => {
     fetchJson(`/api/runs/${runId}/assurance`).then(setData).catch((e) => setError(e.message));
@@ -44,7 +47,7 @@ export default function Assurance({ runId, goToDay }) {
           ))}
         </tbody>
       </table>
-
+      <Source>Each count is the number of rows stored for this run in that history table. Days retained is the number of distinct days in daily_summary.</Source>
       <h3>2. Inventory reconciliation <Status value={inventory.status} /></h3>
       <p>
         Opening stock {int(t.opening)} + replenishment received {int(t.replenished)} - units sold {int(t.sold)} - units expired{" "}
@@ -73,7 +76,7 @@ export default function Assurance({ runId, goToDay }) {
           <tbody>
             {inventory.products.map((p) => (
               <tr key={p.product_id} className={p.ok ? "" : "fail-row"}>
-                <td>{p.name}</td>
+                <td><button className="link" onClick={() => setProductId(p.product_id)}>{p.name}</button></td>
                 <td className="num">{p.opening}</td>
                 <td className="num">{p.replenished}</td>
                 <td className="num">{p.sold}</td>
@@ -86,7 +89,10 @@ export default function Assurance({ runId, goToDay }) {
           </tbody>
         </table>
       </div>
-
+      <Source>
+        Opening, received, sold and expired are sums of inventory_events by type. Closing stock is cross-checked against stock_lots,
+        transaction_lines and orders. Click a product to see its day-by-day movements.
+      </Source>
       <h3>3. Revenue reconciliation <Status value={revenue.status} /></h3>
       <table>
         <tbody>
@@ -116,7 +122,7 @@ export default function Assurance({ runId, goToDay }) {
           </table>
         </div>
       </details>
-
+      <Source>Daily revenue comes from daily_summary, transactions and transaction_lines. Use the day links to open each Daily Report and its transaction list.</Source>
       <h3>4. Operating-cash reconciliation <Status value={cash.status} /></h3>
       <p>
         Opening cash {money(cash.openingCash, 2)} + sales revenue {money(cash.salesRevenue, 2)} - replenishment spending{" "}
@@ -140,7 +146,10 @@ export default function Assurance({ runId, goToDay }) {
           </tbody>
         </table>
       )}
-
+      <Source>
+        Sales and spending come from the transactions and orders tables and are matched to cash_ledger. Closing cash for the last day is on the{" "}
+        <button className="link" onClick={() => goToDay(60)}>Day 60 Daily Report</button>.
+      </Source>
       <h3>5. Exceptions</h3>
       {exceptions.length === 0 ? <p><strong className="pass">No exceptions.</strong> No integrity failures or unexplained movements were found.</p> : (
         <div className="scroll">
@@ -174,7 +183,7 @@ export default function Assurance({ runId, goToDay }) {
           ))}
         </tbody>
       </table>
-
+      <Source>Counts are rows in brain_events and inventory_events. The same events are listed day by day in the Daily Reports and in the Inventory &amp; Operations tables.</Source>
       <h3>7. History cannot be edited <Status value={immutability.status} /></h3>
       <table>
         <tbody>
@@ -188,6 +197,7 @@ export default function Assurance({ runId, goToDay }) {
         database triggers that reject any UPDATE or DELETE. The application has no feature that edits or deletes history: it only reads it,
         or creates a new run. Only a run's status and its Submitted flag can change.
       </p>
+            {productId && <ProductHistory runId={runId} productId={productId} onClose={() => setProductId(null)} onDay={goToDay} />}
     </section>
   );
 }

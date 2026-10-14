@@ -59,7 +59,8 @@ function getInventoryOperations(runId) {
   const eventCounts = Object.fromEntries(EVENT_TYPES.map((type) => [type, 0])); // zero if it never occurred
   for (const r of qAll("SELECT event_type, COUNT(*) AS n FROM brain_events WHERE run_id = ? GROUP BY event_type", runId)) eventCounts[r.event_type] = r.n;
 
-  const expiredBy = (col) => qAll(`SELECT p.${col} AS name, -SUM(e.qty_change) AS units, -SUM(e.qty_change * p.unit_cost) AS value
+  const expiredBy = (col) => qAll(`SELECT p.${col} AS name, MIN(p.product_id) AS product_id, MIN(e.day) AS firstDay,
+      -SUM(e.qty_change) AS units, -SUM(e.qty_change * p.unit_cost) AS value
     FROM inventory_events e JOIN run_products p ON p.run_id = e.run_id AND p.product_id = e.product_id
     WHERE e.run_id = ? AND e.type = 'expired' GROUP BY p.${col} ORDER BY value DESC`, runId);
   const closing = `SELECT p.category, SUM(e.qty_change) AS units, SUM(e.qty_change * p.unit_cost) AS value
@@ -72,7 +73,7 @@ function getInventoryOperations(runId) {
     eventCounts,
     stockouts: {
       count: eventCounts.sold_out,
-      topProducts: qAll(`SELECT p.product_id, p.name, COUNT(*) AS daysSoldOut FROM brain_events b ${named}
+      topProducts: qAll(`SELECT p.product_id, p.name, COUNT(*) AS daysSoldOut, MIN(b.day) AS firstDay FROM brain_events b ${named}
         WHERE b.run_id = ? AND b.event_type = 'sold_out' GROUP BY p.product_id ORDER BY daysSoldOut DESC LIMIT 10`, runId),
     },
     lowStockEvents: eventCounts.low_stock,
